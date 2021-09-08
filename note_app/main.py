@@ -17,6 +17,7 @@ PREFIX = '/note'
 def create_app():
     app = Flask(__name__, static_url_path=f'{PREFIX}/static')
 
+    app.session_cookie_name = config.SESSION_COOKIE_NAME
     app.secret_key = config.SECRET_KEY
 
     app.register_blueprint(bot, url_prefix=f'{PREFIX}/viber-bot')
