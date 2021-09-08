@@ -15,7 +15,7 @@ PREFIX = '/note'
 
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_url_path=f'{PREFIX}/static')
 
     app.secret_key = config.SECRET_KEY
 
