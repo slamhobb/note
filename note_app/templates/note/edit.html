@@ -1,0 +1,55 @@
+{% extends 'shared/layout.html' %}
+
+{% block styles %}
+{% endblock %}
+
+
+{% block scripts %}
+{% endblock %}
+
+
+{% block body %}
+  <nav>
+    <ol class="breadcrumb mt-3">
+      <li class="breadcrumb-item">
+        <a href="{{ url_for('note.index', note_type_id=note.note_type_id) }}">
+          {{ note_type_name }}
+        </a>
+      </li>
+      <li class="breadcrumb-item active">Заметка</li>
+    </ol>
+  </nav>
+
+  <div class="row mt-4">
+    <div class="col-md-6">
+
+      <p>Создана: {{ note.create_date }} Изменена: {{ note.modify_date }}</p>
+      
+      <form action="{{ url_for('.save') }}" method=post>
+        <input type="hidden" name="id" value="{{ note.id }}">
+        <input type="text" class="form-control mt-1" name="text"
+               value="{{ note.text  }}">
+        <div class="input-group mt-1">
+          <select class="form-select" name="note_type_id">
+            {% for note_type in note_types %}
+              <option value="{{ note_type.id }}"
+                      {% if note.note_type_id == note_type.id %} selected {% endif %}>
+                {{ note_type.name }}
+              </option>
+            {% endfor %}
+          </select>
+          
+          <button type="submit" class="btn btn-primary">Сохранить</button>
+        </div>
+      </form>
+
+      <form action="{{ url_for('.delete') }}" method=post>
+        <input type="hidden" name="id" value="{{ note.id }}">
+        <button class="btn btn-danger mt-1">
+            Удалить
+        </button>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

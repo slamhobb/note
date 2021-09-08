@@ -1,0 +1,49 @@
+{% extends 'shared/layout.html' %}
+
+{% block styles %}
+{% endblock %}
+
+
+{% block scripts %}
+{% endblock %}
+
+
+{% block body %}
+
+  <div class="nav nav-pills">
+    {% for note_type in note_types %}
+      <a class="nav-link"
+         href="{{ url_for('note.index', note_type_id=note_type.id) }}">
+          {{ note_type.name }}
+      </a>
+    {% endfor %}
+
+    <a class="nav-link active" href="{{ url_for('note_type.index') }}">...</a>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+
+      <ul class="list-group mt-4">
+        {% for note_type in note_types %}
+          <li class="d-flex list-group-item">
+            <span>{{ note_type.name }}</span>
+            <a class="ms-auto" href="{{ url_for('.delete', id=note_type.id) }}">
+              <img src="{{ url_for('static', filename='vendor/bootstrap/icon/x-circle-fill.svg') }}">
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <form action="{{ url_for('.add') }}" method=post>
+        <div class="input-group mt-1">
+          <input type="text" class="form-control" name="name"
+                 placeholder="Новая категория">
+          <button type="submit" class="btn btn-primary">Добавить</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

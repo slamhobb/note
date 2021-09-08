@@ -1,0 +1,27 @@
+{% extends 'shared/layout.html' %}
+
+{% block styles %}
+{% endblock %}
+
+
+{% block scripts %}
+{% endblock %}
+
+
+{% block body %}
+  <div>
+    {% if error_message %}
+      <p>{{ error_message }}</p>
+    {% endif %}
+
+    <p>Отправте боту комманду /code и введите полученный код</p>
+
+    <form action="{{ url_for('.login') }}" method=post>
+      <label for="login">Логин</label>
+      <input type="text" id="login" name="login">
+      <label for="code">Код</label>
+      <input type="text" id="code" name="code">
+      <button type="submit">Отправить</button>
+    </form>
+  </div>
+{% endblock %}
