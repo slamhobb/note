@@ -56,6 +56,9 @@ class AuthService:
         return UserContext(auth_user.user_id, auth_user.login, True)
 
     def logout(self, user_id: int, token: str):
+        if token is None:
+            return
+
         del self.user_token_cache[token]
         self.auth_token_dao.delete(user_id, token)
 

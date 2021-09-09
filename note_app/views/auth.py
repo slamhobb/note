@@ -17,7 +17,7 @@ def add_user_context():
 
 @mod.route('/')
 def login_page():
-    error_message = request.args.get('error', '')
+    error_message = request.args.get('error', None)
     return render_template('auth/index.html', error_message=error_message)
 
 

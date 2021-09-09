@@ -77,8 +77,9 @@ def edit(id: int):
 
     note_type_name = list(filter(lambda nt: nt['id'] == note.note_type_id, note_types))[0]['name']
 
-    return render_template('note/edit.html', note_types=note_types, note=note,
-                           note_type_name=note_type_name)
+    return render_template(
+        'note/edit.html', note_types=note_types, note=note,
+        note_type_name=note_type_name)
 
 
 @mod.route('/save', methods=['POST'])

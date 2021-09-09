@@ -15,11 +15,13 @@
   <body>
     <nav class="navbar navbar-expand navbar-dark bg-dark mb-4">
       <div class="container">
-        <a class="navbar-brand" href="/">BadKnife</a>
-        <div class="navbar-text ms-auto mr-2">{{ g.user_context.login }}</div>
-        <div class="navbar-nav">
-          <a class="nav-link" href="{{ url_for('auth.logout') }}">Выйти</a>
-        </div>
+        <a class="navbar-brand" href="/">BadNote</a>
+        {% if g.user_context.login %}
+          <div class="navbar-text ms-auto mr-2">{{ g.user_context.login }}</div>
+          <div class="navbar-nav">
+            <a class="nav-link" href="{{ url_for('auth.logout') }}">Выйти</a>
+          </div>
+        {% endif %}
       </div>
     </nav>
 
