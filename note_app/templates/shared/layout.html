@@ -13,7 +13,7 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-expand navbar-dark bg-dark mb-4">
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
       <div class="container">
         <a class="navbar-brand" href="/">BadNote</a>
         {% if g.user_context.login %}
@@ -25,7 +25,7 @@
       </div>
     </nav>
 
-    <div class="container">
+    <div class="container mt-2">
       {% for message in get_flashed_messages() %}
         <div>{{ message }}</div>
       {% endfor %}

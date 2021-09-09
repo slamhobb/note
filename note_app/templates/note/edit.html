@@ -9,8 +9,8 @@
 
 
 {% block body %}
-  <nav>
-    <ol class="breadcrumb mt-3">
+  <nav class="mt-2">
+    <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a href="{{ url_for('note.index', note_type_id=note.note_type_id) }}">
           {{ note_type_name }}
@@ -20,35 +20,40 @@
     </ol>
   </nav>
 
-  <div class="row mt-4">
+  <div class="row">
     <div class="col-md-6">
 
-      <p>Создана: {{ note.create_date }} Изменена: {{ note.modify_date }}</p>
+      <span>
+        Создана: {{ note.create_date }} Изменена: {{ note.modify_date }}
+      </span>
       
-      <form action="{{ url_for('.save') }}" method=post>
-        <input type="hidden" name="id" value="{{ note.id }}">
-        <input type="text" class="form-control mt-1" name="text"
-               value="{{ note.text  }}">
-        <div class="input-group mt-1">
-          <select class="form-select" name="note_type_id">
-            {% for note_type in note_types %}
-              <option value="{{ note_type.id }}"
-                      {% if note.note_type_id == note_type.id %} selected {% endif %}>
-                {{ note_type.name }}
-              </option>
-            {% endfor %}
-          </select>
-          
-          <button type="submit" class="btn btn-primary">Сохранить</button>
-        </div>
-      </form>
+      <div class="mt-1">
+        <form action="{{ url_for('.save') }}" method=post>
+          <input type="hidden" name="id" value="{{ note.id }}">
+          <textarea class="form-control" name="text">{{ note.text }}</textarea>
+          <div class="input-group mt-1">
+            <select class="form-select" name="note_type_id">
+              {% for note_type in note_types %}
+                <option value="{{ note_type.id }}"
+                        {% if note.note_type_id == note_type.id %} selected {% endif %}>
+                  {{ note_type.name }}
+                </option>
+              {% endfor %}
+            </select>
+            
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+          </div>
+        </form>
+      </div>
 
-      <form action="{{ url_for('.delete') }}" method=post>
-        <input type="hidden" name="id" value="{{ note.id }}">
-        <button class="btn btn-danger mt-1">
-            Удалить
-        </button>
-      </form>
+      <div class="mt-1">
+        <form action="{{ url_for('.delete') }}" method=post>
+          <input type="hidden" name="id" value="{{ note.id }}">
+          <button class="btn btn-danger">
+              Удалить
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 

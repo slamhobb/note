@@ -21,10 +21,10 @@
     <a class="nav-link active" href="{{ url_for('note_type.index') }}">...</a>
   </div>
 
-  <div class="row">
+  <div class="row mt-2">
     <div class="col-md-6">
 
-      <ul class="list-group mt-4">
+      <ul class="list-group">
         {% for note_type in note_types %}
           <li class="d-flex list-group-item">
             <span>{{ note_type.name }}</span>
@@ -35,13 +35,15 @@
         {% endfor %}
       </ul>
 
-      <form action="{{ url_for('.add') }}" method=post>
-        <div class="input-group mt-1">
-          <input type="text" class="form-control" name="name"
-                 placeholder="Новая категория">
-          <button type="submit" class="btn btn-primary">Добавить</button>
-        </div>
-      </form>
+      <div class="mt-2">
+        <form action="{{ url_for('.add') }}" method=post>
+          <div class="input-group">
+            <input type="text" class="form-control" name="name"
+                   placeholder="Новая категория">
+            <button type="submit" class="btn btn-primary">Добавить</button>
+          </div>
+        </form>
+      </div>
 
     </div>
   </div>
