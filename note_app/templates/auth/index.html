@@ -9,19 +9,26 @@
 
 
 {% block body %}
-  <div>
     {% if error_message %}
       <p>{{ error_message }}</p>
     {% endif %}
 
     <p>Отправте боту комманду /code и введите полученный код</p>
 
-    <form action="{{ url_for('.login') }}" method=post>
-      <label for="login">Логин</label>
-      <input type="text" id="login" name="login">
-      <label for="code">Код</label>
-      <input type="text" id="code" name="code">
-      <button type="submit">Отправить</button>
-    </form>
-  </div>
+    <div class="row">
+      <div class="col-md-4">
+        <form action="{{ url_for('.login') }}" method=post>
+          <input type="text" class="form-control" name="login"
+                 placeholder="Логин">
+          <input type="text" class="form-control" name="code"
+                 placeholder="Код">
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary d-grid">
+              Отправить
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
 {% endblock %}

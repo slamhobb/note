@@ -19,5 +19,6 @@ BOT_AUTH_TOKEN = config['BOT_AUTH_TOKEN']
 DATA_BASE_CONNECTION_STRING = config['DATA_BASE_CONNECTION_STRING']
 AUTH_TOKEN_NAME = config['AUTH_TOKEN_NAME']
 SESSION_COOKIE_NAME = 'note-session'
-# generate SECRET_KEY b64encode(os.urandom(20)).decode()
+# generate SECRET_KEY
+# import os;import base64;base64.b64encode(os.urandom(20)).decode()
 SECRET_KEY = b64decode(config["SECRET_KEY_BASE64"].encode())
