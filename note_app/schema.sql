@@ -30,7 +30,7 @@ create table note_type(
 create index pk_note_type_id on note_type(id);
 create index ix_note_type_user_id on note_type(user_id);
 
-insert into note_type(user_id, name) values (1, 'Общие');
+insert into note_type(user_id, name) values (0, 'Общие');
 
 
 drop table if exists note;
