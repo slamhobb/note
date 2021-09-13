@@ -22,3 +22,4 @@ SESSION_COOKIE_NAME = 'note-session'
 # generate SECRET_KEY
 # import os;import base64;base64.b64encode(os.urandom(20)).decode()
 SECRET_KEY = b64decode(config["SECRET_KEY_BASE64"].encode())
+SERVICE_LOGIN = config['SERVICE_LOGIN']

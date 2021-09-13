@@ -12,7 +12,7 @@ from note_app.domain.auth import AuthToken, AuthUser, UserContext
 
 
 class AuthService:
-    user_id_by_code_cache = {}
+    code_by_user_id_cache = {}
     user_token_cache = {}
 
     auth_token_dao = inject.attr(AuthTokenDao)
@@ -21,25 +21,33 @@ class AuthService:
     def create_digit_code(self, user_id: int) -> str:
         digit_code = self._generate_digit_code()
 
-        self.user_id_by_code_cache[digit_code] = user_id
+        self.code_by_user_id_cache[user_id] = digit_code
 
         return digit_code
 
     def authenticate_by_digit_code(self, login: str, digit_code: str) -> str:
-        user_id = self.user_id_by_code_cache.pop(digit_code, None)
-
-        if user_id is None:
-            return None
-
         user = self.user_service.get_by_login(login)
 
         if user is None:
             return None
 
-        if user_id != user.id:
+        saved_digit_code = self.code_by_user_id_cache.pop(user.id, None)
+
+        if digit_code != saved_digit_code:
             return None
 
-        auth_token = AuthToken(0, user_id, self._generate_token())
+        auth_token = AuthToken(0, user.id, self._generate_token())
+        self.auth_token_dao.insert(auth_token)
+
+        return auth_token.token
+
+    def authentificate_by_login(self, login: str) -> str:
+        user = self.user_service.get_by_login(login)
+
+        if user is None:
+            return None
+
+        auth_token = AuthToken(0, user.id, self._generate_token())
         self.auth_token_dao.insert(auth_token)
 
         return auth_token.token

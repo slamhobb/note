@@ -37,6 +37,7 @@ def index(note_type_id: int = 1):
     note_types = [note_type.to_web_dict() for note_type in note_types]
 
     notes = note_service.get_by_type(user_id, note_type_id)
+    notes.sort(key=lambda n: n.create_date, reverse=True)
     notes = [note.to_web_dict() for note in notes]
 
     def date_delta(date: date, today: date):
@@ -87,16 +88,17 @@ def edit(id: int):
 def save():
     user_id = g.user_context.user_id
 
-    print(request.form)
     id = request.form.get('id', 0)
     text = request.form['text']
     note_type_id = request.form['note_type_id']
 
-    note = Note(id, user_id, text, note_type_id)
+    note = note_service.get_by_id(user_id, id)
+    old_note_type_id = note.note_type_id
 
+    note = Note(id, user_id, text, note_type_id)
     note_service.save(note)
 
-    return redirect(url_for('.index', note_type_id=note_type_id))
+    return redirect(url_for('.index', note_type_id=old_note_type_id))
 
 
 @mod.route('/delete', methods=['POST'])

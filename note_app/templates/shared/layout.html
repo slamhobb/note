@@ -15,7 +15,7 @@
   <body>
     <nav class="navbar navbar-expand navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand" href="/">BadNote</a>
+        <a class="navbar-brand" href="{{ url_for('note.index') }}">BadNote</a>
         {% if g.user_context.login %}
           <div class="navbar-text ms-auto mr-2">{{ g.user_context.login }}</div>
           <div class="navbar-nav">

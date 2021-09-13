@@ -2,6 +2,8 @@ import inject
 
 from flask import Blueprint, redirect, render_template, request, url_for, g
 
+from note_app import config
+
 from note_app.infrastructure.web import get_token, set_token, remove_token
 from note_app.business.auth_service import AuthService
 
@@ -17,6 +19,10 @@ def add_user_context():
 
 @mod.route('/')
 def login_page():
+    user_id = g.user_context.user_id
+    if user_id is not None:
+        return redirect(url_for('redirect.redirect'))
+
     error_message = request.args.get('error', None)
     return render_template('auth/index.html', error_message=error_message)
 
@@ -29,6 +35,17 @@ def login():
 
     if token is None:
         return redirect(url_for('.login_page', error='Неверный логин или код'))
+
+    set_token(token, True)
+    return redirect(url_for('redirect.redirect'))
+
+
+@mod.route('/service-login/<string:login>')
+def service_login(login: str):
+    if not config.SERVICE_LOGIN:
+        return redirect(url_for('redirect.redirect'))
+
+    token = auth_service.authentificate_by_login(login)
 
     set_token(token, True)
     return redirect(url_for('redirect.redirect'))
