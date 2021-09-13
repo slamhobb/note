@@ -37,7 +37,7 @@ def index(note_type_id: int = 1):
     note_types = [note_type.to_web_dict() for note_type in note_types]
 
     notes = note_service.get_by_type(user_id, note_type_id)
-    notes.sort(key=lambda n: n.create_date, reverse=True)
+    notes.sort(key=lambda n: (n.create_date, n.id), reverse=True)
     notes = [note.to_web_dict() for note in notes]
 
     def date_delta(date: date, today: date):
