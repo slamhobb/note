@@ -93,7 +93,7 @@ def save():
     note_type_id = request.form['note_type_id']
 
     note = note_service.get_by_id(user_id, id)
-    old_note_type_id = note.note_type_id
+    old_note_type_id = note.note_type_id if note is not None else note_type_id
 
     note = Note(id, user_id, text, note_type_id)
     note_service.save(note)

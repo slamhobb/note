@@ -18,6 +18,9 @@ class NoteService:
         return self.note_dao.get_by_id(user_id, id)
 
     def save(self, note: Note) -> int:
+        if len(note.text) == 0:
+            return note.id
+
         if note.id == 0:
             note.create_date = date.today()
             note.modify_date = date.today()
