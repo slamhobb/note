@@ -96,6 +96,7 @@ def save():
     text = request.form['text']
     note_type_id = request.form['note_type_id']
 
+    old_hidden = False
     old_note_type_id = note_type_id
 
     if id == 0:
@@ -103,13 +104,15 @@ def save():
     else:
         note = note_service.get_by_id(user_id, id)
         old_note_type_id = note.note_type_id
+        old_hidden = note.hidden
 
         note.text = text
         note.note_type_id = note_type_id
 
     note_service.save(note)
 
-    return redirect(url_for('.index', note_type_id=old_note_type_id))
+    return redirect(url_for(
+        '.index', note_type_id=old_note_type_id, hidden=old_hidden))
 
 
 @mod.route('/hide', methods=['POST'])
@@ -128,7 +131,7 @@ def hide():
     note_service.save(note)
 
     return redirect(url_for(
-        '.index',note_type_id=note.note_type_id, hidden=old_hidden))
+        '.index', note_type_id=note.note_type_id, hidden=old_hidden))
 
 
 @mod.route('/delete', methods=['POST'])
@@ -141,4 +144,5 @@ def delete():
     note = note_service.get_by_id(user_id, id)
     note_service.delete(user_id, id)
 
-    return redirect(url_for('.index', note_type_id=note.note_type_id))
+    return redirect(url_for(
+        '.index', note_type_id=note.note_type_id, hidden=note.hidden))
