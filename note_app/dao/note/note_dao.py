@@ -10,10 +10,11 @@ class NoteDao(BaseDao):
     def __init__(self):
         super(NoteDao, self).__init__('/note/sql/')
 
-    def get_by_type(self, user_id: int, note_type_id: int) -> List[Note]:
+    def get_by_type(
+            self, user_id: int, note_type_id: int, hidden: bool) -> List[Note]:
         sql = self.get_sql('get_by_type.sql')
         return self.query_all(Note, sql, dict(
-            user_id=user_id, note_type_id=note_type_id))
+            user_id=user_id, note_type_id=note_type_id, hidden=hidden))
 
     def get_by_id(self, user_id: int, id: int) -> Note:
         sql = self.get_sql('get_by_id.sql')

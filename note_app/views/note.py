@@ -8,6 +8,7 @@ from flask import redirect, url_for
 
 from note_app.infrastructure.web import get_token
 from note_app.infrastructure.auth import login_required
+from note_app.infrastructure.parse import get_bool
 
 from note_app.business.auth_service import AuthService
 from note_app.business.note_type_service import NoteTypeService
@@ -31,12 +32,13 @@ def add_user_context():
 @mod.route('/by-type/<int:note_type_id>')
 @login_required
 def index(note_type_id: int = 1):
+    hidden = get_bool(request.args.get('hidden'))
     user_id = g.user_context.user_id
 
     note_types = note_type_service.get_by_user_id(user_id)
     note_types = [note_type.to_web_dict() for note_type in note_types]
 
-    notes = note_service.get_by_type(user_id, note_type_id)
+    notes = note_service.get_by_type(user_id, note_type_id, hidden)
     notes.sort(key=lambda n: (n.create_date, n.id), reverse=True)
     notes = [note.to_web_dict() for note in notes]
 
@@ -63,7 +65,7 @@ def index(note_type_id: int = 1):
 
     return render_template(
         'note/index.html', note_types=note_types, notes=notes,
-        note_type_id=note_type_id)
+        note_type_id=note_type_id, hidden=hidden)
 
 
 @mod.route('/edit/<int:id>')
@@ -76,7 +78,9 @@ def edit(id: int):
 
     note = note_service.get_by_id(user_id, id)
 
-    note_type_name = list(filter(lambda nt: nt['id'] == note.note_type_id, note_types))[0]['name']
+    note_type_name = list(
+        filter(
+            lambda nt: nt['id'] == note.note_type_id, note_types))[0]['name']
 
     return render_template(
         'note/edit.html', note_types=note_types, note=note,
@@ -92,13 +96,39 @@ def save():
     text = request.form['text']
     note_type_id = request.form['note_type_id']
 
-    note = note_service.get_by_id(user_id, id)
-    old_note_type_id = note.note_type_id if note is not None else note_type_id
+    old_note_type_id = note_type_id
 
-    note = Note(id, user_id, text, note_type_id)
+    if id == 0:
+        note = Note(0, user_id, text, note_type_id)
+    else:
+        note = note_service.get_by_id(user_id, id)
+        old_note_type_id = note.note_type_id
+
+        note.text = text
+        note.note_type_id = note_type_id
+
     note_service.save(note)
 
     return redirect(url_for('.index', note_type_id=old_note_type_id))
+
+
+@mod.route('/hide', methods=['POST'])
+@login_required
+def hide():
+    user_id = g.user_context.user_id
+
+    id = request.form.get('id', 0)
+
+    note = note_service.get_by_id(user_id, id)
+    if note is None:
+        return redirect(url_for('.index'))
+
+    old_hidden = note.hidden
+    note.hidden = not note.hidden
+    note_service.save(note)
+
+    return redirect(url_for(
+        '.index',note_type_id=note.note_type_id, hidden=old_hidden))
 
 
 @mod.route('/delete', methods=['POST'])

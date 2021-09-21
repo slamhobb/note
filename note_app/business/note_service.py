@@ -11,8 +11,9 @@ from note_app.domain.note import Note
 class NoteService:
     note_dao = inject.attr(NoteDao)
 
-    def get_by_type(self, user_id: int, note_type_id: int) -> List[Note]:
-        return self.note_dao.get_by_type(user_id, note_type_id)
+    def get_by_type(
+            self, user_id: int, note_type_id: int, hidden: bool) -> List[Note]:
+        return self.note_dao.get_by_type(user_id, note_type_id, hidden)
 
     def get_by_id(self, user_id: int, id: int):
         return self.note_dao.get_by_id(user_id, id)

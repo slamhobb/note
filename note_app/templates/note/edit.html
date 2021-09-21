@@ -53,6 +53,19 @@
           </div>
         </form>
       </div>
+
+      <div class="mt-1">
+        <form action="{{ url_for('.hide') }}" method=post>
+          <input type="hidden" name="id" value="{{ note.id }}">
+          <button type="submit" class="btn btn-primary">
+            {% if note.hidden %}
+              Показать
+            {% else %}
+              Скрыть
+            {% endif %}
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 

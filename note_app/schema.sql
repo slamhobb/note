@@ -17,7 +17,7 @@ create table auth_token(
 );
 
 create index pk_auth_token_id on auth_token(id);
-create index ix_auth_token_user_id on auth_token(user_id);
+create index ix_auth_token_token_user_id on auth_token(token, user_id);
 
 
 drop table if exists note_type;
@@ -40,8 +40,10 @@ create table note(
     text text not null,
     note_type_id integer not null,
     create_date text not null,
-    modify_date text not null
+    modify_date text not null,
+    hidden integer not null
 );
 
 create index pk_note_id on note(id);
-create index ix_note_user_id_note_type_id on note(user_id, note_type_id);
+create index ix_note_user_id_note_type_id_hidden
+    on note(user_id, note_type_id, hidden);

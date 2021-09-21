@@ -9,8 +9,7 @@
 
 
 {% block body %}
-
-  <div class="nav nav-pills">
+  <nav class="nav nav-pills">
     {% for note_type in note_types %}
       <a class="nav-link"
          href="{{ url_for('note.index', note_type_id=note_type.id) }}">
@@ -19,7 +18,7 @@
     {% endfor %}
 
     <a class="nav-link active" href="{{ url_for('note_type.index') }}">...</a>
-  </div>
+  </nav>
 
   <div class="row mt-2">
     <div class="col-md-6">
@@ -47,5 +46,4 @@
 
     </div>
   </div>
-
 {% endblock %}
