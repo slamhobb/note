@@ -5,6 +5,11 @@
 
 
 {% block scripts %}
+<script type="text/javascript">
+  var focusId = "note{{ focus_note_id }}";
+</script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='node-list.js') }}"></script>
 {% endblock %}
 
 
@@ -51,7 +56,7 @@
 
       <div class="list-group mt-1">
         {% for note in notes %}
-          <a class="list-group-item list-group-item-action"
+          <a id="note{{ note.id }}" class="list-group-item list-group-item-action"
              href="{{ url_for('.edit', id=note.id) }}">
             {% if hidden %}
               <span><s>{{ note.text }}</s></span>

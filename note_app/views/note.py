@@ -33,6 +33,7 @@ def add_user_context():
 @login_required
 def index(note_type_id: int = 1):
     hidden = get_bool(request.args.get('hidden'))
+    focus_note_id = request.args.get('focus_note_id', 0)
     user_id = g.user_context.user_id
 
     note_types = note_type_service.get_by_user_id(user_id)
@@ -65,7 +66,7 @@ def index(note_type_id: int = 1):
 
     return render_template(
         'note/index.html', note_types=note_types, notes=notes,
-        note_type_id=note_type_id, hidden=hidden)
+        note_type_id=note_type_id, hidden=hidden, focus_note_id=focus_note_id)
 
 
 @mod.route('/edit/<int:id>')
@@ -109,10 +110,11 @@ def save():
         note.text = text
         note.note_type_id = note_type_id
 
-    note_service.save(note)
+    id = note_service.save(note)
 
     return redirect(url_for(
-        '.index', note_type_id=old_note_type_id, hidden=old_hidden))
+        '.index', note_type_id=old_note_type_id, hidden=old_hidden,
+        focus_note_id=id))
 
 
 @mod.route('/hide', methods=['POST'])
