@@ -13,7 +13,7 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a href="{{ url_for('note.index', note_type_id=note.note_type_id,
-                            focus_note_id=note.id) }}">
+                            hidden=note.hidden, focus_note_id=note.id) }}">
           {{ note_type_name }}
         </a>
       </li>

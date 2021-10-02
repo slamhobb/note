@@ -1,12 +1,11 @@
 'use strict';
 
+var focusIdElement = document.getElementById('focusId');
+var focusId = focusIdElement && focusIdElement.value;
+
 if (focusId) {
-    console.log(focusId);
-
-    var element = document.getElementById(focusId);
-    if (element) {
-        console.log(element);
-
-        element.focus();
+    var noteElement = document.getElementById(focusId);
+    if (noteElement) {
+        noteElement.focus();
     }
 }

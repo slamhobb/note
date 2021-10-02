@@ -5,15 +5,13 @@
 
 
 {% block scripts %}
-<script type="text/javascript">
-  var focusId = "note{{ focus_note_id }}";
-</script>
-
 <script type="text/javascript" src="{{ url_for('static', filename='node-list.js') }}"></script>
 {% endblock %}
 
 
 {% block body %}
+  <input id="focusId" type="hidden" value="note{{ focus_note_id }}" />
+
   <nav class="nav nav-pills">
     {% for note_type in note_types %}
       <a class="nav-link {% if note_type_id == note_type.id %} active {% endif %}"
