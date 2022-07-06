@@ -1,8 +1,8 @@
 'use strict';
 
-var addButton = document.getElementById('addButtonId');
-var saveForm = document.getElementById('saveFormId');
-addButton.addEventListener('click', function() {
-    addButton.classList.toggle('d-none');
-    saveForm.classList.toggle('d-none');
+var addButtonElement = document.getElementById('addButtonId');
+var saveFormElement = document.getElementById('saveFormId');
+addButtonElement.addEventListener('click', function() {
+    addButtonElement.classList.toggle('d-none');
+    saveFormElement.classList.toggle('d-none');
 });

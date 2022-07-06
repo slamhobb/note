@@ -3,6 +3,7 @@ import inject
 from typing import List
 
 from datetime import date
+import copy
 
 from note_app.dao.note.note_dao import NoteDao
 from note_app.domain.note import Note
@@ -18,17 +19,34 @@ class NoteService:
     def get_by_id(self, user_id: int, id: int):
         return self.note_dao.get_by_id(user_id, id)
 
-    def save(self, note: Note) -> int:
+    def save(self, note: Note) -> (int, Note):
         if len(note.text) == 0:
-            return note.id
+            return note.id, note
 
         if note.id == 0:
             note.create_date = date.today()
             note.modify_date = date.today()
-            return self.note_dao.insert(note)
+            return self.note_dao.insert(note), note
         else:
-            note.modify_date = date.today()
-            return self.note_dao.update(note)
+            old_note = self.note_dao.get_by_id(note.user_id, note.id)
+            new_note = copy.copy(old_note)
+
+            if new_note.text != note.text:
+                new_note.text = note.text
+                new_note.modify_date = date.today()
+
+            new_note.note_type_id = note.note_type_id
+
+            return self.note_dao.update(new_note), old_note
+
+    def hide(self, user_id: int, id: int) -> Note:
+        old_note = self.note_dao.get_by_id(user_id, id)
+        new_note = copy.copy(old_note)
+
+        new_note.hidden = not new_note.hidden
+        self.note_dao.update(new_note)
+
+        return old_note
 
     def reset_notes_type(self, user_id: int, note_type_id: int):
         self.note_dao.reset_notes_type(user_id, note_type_id, date.today())

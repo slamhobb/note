@@ -41,7 +41,8 @@
   <div class="row mt-2">
     <div class="col-md-6">
 
-      <div class="d-flex">
+      <div class="d-flex mt-2">
+        <button id="addButtonId" class="btn btn-primary btn-sm">Добавить</button>
         <nav class="ms-auto">
           <div class="pagination pagination-sm">
             {% if hidden %}
@@ -67,6 +68,17 @@
         </nav>
       </div>
 
+      <div id="saveFormId" class="mt-2 d-none">
+        <form action="{{ url_for('.save') }}" method=post>
+          <div class="d-grid gap-1">
+            <input type="hidden" name="note_type_id" value="{{ note_type_id }}">
+            <textarea class="form-control" name="text"
+                      placeholder="Новая заметка"></textarea>
+            <button class="btn btn-primary" type="submit">Сохранить</button>
+          </div>
+        </form>
+      </div>
+
       <div class="list-group mt-1">
         {% for note in notes %}
           <a id="note{{ note.id }}" class="list-group-item list-group-item-action"
@@ -81,16 +93,6 @@
         {% endfor %}
       </div>
 
-      <div class="mt-2">
-        <form action="{{ url_for('.save') }}" method=post>
-          <input type="hidden" name="note_type_id" value="{{ note_type_id }}">
-          <textarea class="form-control" name="text"
-                    placeholder="Новая заметка"></textarea>
-          <div class="d-grid mt-1">
-            <button class="btn btn-primary" type="submit">Добавить</button>
-          </div>
-        </form>
-      </div>
     </div>
   </div>
 {% endblock %}

@@ -12,18 +12,18 @@ class BotService:
     note_service = inject.attr(NoteService)
     auth_service = inject.attr(AuthService)
 
-    def handle_message(self, user_id: str, message: str) -> str:
+    def handle_message(self, viber_id: str, message: str) -> str:
         if message.startswith('/'):
-            return self._handle_service_message(user_id, message)
+            return self._handle_service_message(viber_id, message)
         else:
-            return self._handle_note_message(user_id, message)
+            return self._handle_note_message(viber_id, message)
 
-    def _handle_service_message(self, user_id: str, message: str) -> str:
+    def _handle_service_message(self, viber_id: str, message: str) -> str:
         message = message.lower().strip()
 
         if message.startswith('/help'):
             commands = [
-                'Просмотр заметок по ссылке https://badb.fun/note\n'
+                'Просмотр заметок по ссылке https://badb.site/note\n'
                 '/help помощь',
                 '/id получение идентификатора пользователя viber',
                 '/user получение информации о пользователе',
@@ -34,16 +34,16 @@ class BotService:
             return '\n'.join(commands)
 
         if message.startswith('/id'):
-            return f'Id: {user_id}'
+            return f'Id: {viber_id}'
 
         if message.startswith('/user'):
-            return self._handle_get_user_data(user_id)
+            return self._handle_get_user_data(viber_id)
 
         if message.startswith('/reg'):
-            return self._handle_reg_user(user_id, message)
+            return self._handle_reg_user(viber_id, message)
 
         if message.startswith('/code'):
-            return self._handle_create_code(user_id)
+            return self._handle_create_code(viber_id)
 
         return 'Не поддерживаемая команда'
 

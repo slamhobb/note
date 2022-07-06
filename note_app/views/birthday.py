@@ -53,7 +53,7 @@ def edit(id: int):
 def save():
     user_id = g.user_context.user_id
 
-    id = request.form.get('id', 0)
+    id = int(request.form.get('id', 0))
     birth_date = datetime.strptime(request.form['birth_date'], '%d.%m.%Y').date()
     name = request.form['name']
 
@@ -74,7 +74,7 @@ def save():
 def delete():
     user_id = g.user_context.user_id
 
-    id = request.form['id']
+    id = int(request.form['id'])
 
     birthday_service.delete(user_id, id)
 

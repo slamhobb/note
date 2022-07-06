@@ -43,8 +43,8 @@ def index(note_type_id: int = 1):
     notes.sort(key=lambda n: (n.create_date, n.id), reverse=True)
     notes = [note.to_web_dict() for note in notes]
 
-    def date_delta(date: date, today: date):
-        delta = relativedelta(today, date)
+    def date_delta(note_date: date, today: date):
+        delta = relativedelta(today, note_date)
 
         if delta.years > 0:
             return f'{delta.years}г'
@@ -93,27 +93,16 @@ def edit(id: int):
 def save():
     user_id = g.user_context.user_id
 
-    id = request.form.get('id', 0)
+    id = int(request.form.get('id', 0))
     text = request.form['text']
-    note_type_id = request.form['note_type_id']
+    note_type_id = int(request.form['note_type_id'])
 
-    old_hidden = False
-    old_note_type_id = note_type_id
+    note = Note(id, user_id, text, note_type_id)
 
-    if id == 0:
-        note = Note(0, user_id, text, note_type_id)
-    else:
-        note = note_service.get_by_id(user_id, id)
-        old_note_type_id = note.note_type_id
-        old_hidden = note.hidden
-
-        note.text = text
-        note.note_type_id = note_type_id
-
-    id = note_service.save(note)
+    id, old_note = note_service.save(note)
 
     return redirect(url_for(
-        '.index', note_type_id=old_note_type_id, hidden=old_hidden,
+        '.index', note_type_id=old_note.note_type_id, hidden=old_note.hidden,
         focus_note_id=id))
 
 
@@ -122,18 +111,12 @@ def save():
 def hide():
     user_id = g.user_context.user_id
 
-    id = request.form.get('id', 0)
+    id = int(request.form.get('id', 0))
 
-    note = note_service.get_by_id(user_id, id)
-    if note is None:
-        return redirect(url_for('.index'))
-
-    old_hidden = note.hidden
-    note.hidden = not note.hidden
-    note_service.save(note)
+    old_note = note_service.hide(user_id, id)
 
     return redirect(url_for(
-        '.index', note_type_id=note.note_type_id, hidden=old_hidden))
+        '.index', note_type_id=old_note.note_type_id, hidden=old_note.hidden))
 
 
 @mod.route('/delete', methods=['POST'])
@@ -141,7 +124,7 @@ def hide():
 def delete():
     user_id = g.user_context.user_id
 
-    id = request.form['id']
+    id = int(request.form['id'])
 
     note = note_service.get_by_id(user_id, id)
     note_service.delete(user_id, id)
