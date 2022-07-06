@@ -1,0 +1,56 @@
+{% set menu =
+  [
+    {
+      'name': 'Заметки',
+      'active': False,
+      'url': url_for('note.index')
+    },
+    {
+      'name': 'ДР',
+      'active': True,
+      'url': url_for('birthday.index')
+    }
+  ]
+%}
+
+{% extends 'shared/layout.html' %}
+
+{% block styles %}
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{{ url_for('static', filename='birthday-list.js') }}"></script>
+{% endblock %}
+
+
+{% block body %}
+  <div class="row mt-2">
+    <div class="col-md-6">
+
+      <div class="list-group list-group-flush">
+        {% for birthday in birthdays %}
+          <a href="{{ url_for('.edit', id=birthday.id) }}"
+             class="list-group-item list-group-item-action">
+            <strong class="text-danger">
+              {{ birthday.birth_date.strftime('%d %b')|upper }}
+            </strong>
+            <span>{{ birthday.name }}</span>
+          </a>
+        {% endfor %}
+      </div>
+
+      <div class="d-grid mt-2">
+        <button id="addButtonId" class="btn btn-primary">Добавить</button>
+        <form id="saveFormId" class="d-none" action="{{ url_for('.save') }}" method=post>
+          <div class="d-grid gap-1">
+            <input type="text" class="form-control" name="birth_date" placeholder="Дата" />
+            <input type="text" class="form-control" name="name" placeholder="Имя" />
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+{% endblock %}

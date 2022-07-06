@@ -1,3 +1,18 @@
+{% set menu =
+  [
+    {
+      'name': 'Заметки',
+      'active': True,
+      'url': url_for('note.index')
+    },
+    {
+      'name': 'ДР',
+      'active': False,
+      'url': url_for('birthday.index')
+    }
+  ]
+%}
+
 {% extends 'shared/layout.html' %}
 
 {% block styles %}
@@ -12,7 +27,7 @@
   <nav class="mt-2">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="{{ url_for('note.index', note_type_id=note.note_type_id,
+        <a href="{{ url_for('.index', note_type_id=note.note_type_id,
                             hidden=note.hidden, focus_note_id=note.id) }}">
           {{ note_type_name }}
         </a>

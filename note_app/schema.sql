@@ -47,3 +47,15 @@ create table note(
 create index pk_note_id on note(id);
 create index ix_note_user_id_note_type_id_hidden
     on note(user_id, note_type_id, hidden);
+
+
+drop table if exists birthday;
+create table birthday(
+    id integer primary key autoincrement,
+    user_id integer not null,
+    birth_date text not null,
+    name text not null
+);
+
+create index pk_birthday_id on birthday(id);
+create index ix_birthday_user_id on birthday(user_id);

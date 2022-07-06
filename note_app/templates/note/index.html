@@ -1,3 +1,18 @@
+{% set menu =
+  [
+    {
+      'name': 'Заметки',
+      'active': True,
+      'url': url_for('note.index')
+    },
+    {
+      'name': 'ДР',
+      'active': False,
+      'url': url_for('birthday.index')
+    }
+  ]
+%}
+
 {% extends 'shared/layout.html' %}
 
 {% block styles %}

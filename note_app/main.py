@@ -1,3 +1,6 @@
+import locale
+locale.setlocale(locale.LC_TIME, "ru_RU")
+
 from .dependency_injection import configure_inject
 configure_inject()
 
@@ -9,6 +12,7 @@ from note_app.views.auth import mod as auth
 from note_app.views.redirect import mod as redirect
 from note_app.views.note import mod as note
 from note_app.views.note_type import mod as note_type
+from note_app.views.birthday import mod as birthday
 
 
 PREFIX = '/note'
@@ -25,5 +29,6 @@ def create_app():
     app.register_blueprint(redirect, url_prefix=f'{PREFIX}/redirect')
     app.register_blueprint(note, url_prefix=f'{PREFIX}')
     app.register_blueprint(note_type, url_prefix=f'{PREFIX}/note-type')
+    app.register_blueprint(birthday, url_prefix=f'{PREFIX}/birthday')
 
     return app

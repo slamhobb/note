@@ -46,6 +46,6 @@ class AuthUser:
 
 @dataclass
 class UserContext:
-    user_id: int
-    login: str
+    user_id: [int, None]
+    login: [str, None]
     is_authenticated: bool

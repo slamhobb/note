@@ -25,7 +25,7 @@ class AuthService:
 
         return digit_code
 
-    def authenticate_by_digit_code(self, login: str, digit_code: str) -> str:
+    def authenticate_by_digit_code(self, login: str, digit_code: str) -> [str, None]:
         user = self.user_service.get_by_login(login)
 
         if user is None:
@@ -41,7 +41,7 @@ class AuthService:
 
         return auth_token.token
 
-    def authentificate_by_login(self, login: str) -> str:
+    def authenticate_by_login(self, login: str) -> [str, None]:
         user = self.user_service.get_by_login(login)
 
         if user is None:
@@ -52,7 +52,7 @@ class AuthService:
 
         return auth_token.token
 
-    def get_user_context(self, token):
+    def get_user_context(self, token) -> UserContext:
         if token is None:
             return UserContext(None, None, False)
 
@@ -70,7 +70,7 @@ class AuthService:
         del self.user_token_cache[token]
         self.auth_token_dao.delete(user_id, token)
 
-    def _get_auth_user(self, token: str) -> AuthUser:
+    def _get_auth_user(self, token: str) -> [AuthUser, None]:
         auth_user = self.user_token_cache.get(token, None)
         if auth_user is not None:
             return auth_user
@@ -88,6 +88,6 @@ class AuthService:
         return ''.join(random.choice(string.digits) for i in range(6))
 
     @staticmethod
-    def _generate_token():
+    def _generate_token() -> str:
         random_string = base64.b64encode(os.urandom(30))
         return uuid.uuid1().hex + str(random_string, 'utf-8')

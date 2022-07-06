@@ -1,0 +1,57 @@
+{% set menu =
+  [
+    {
+      'name': 'Заметки',
+      'active': False,
+      'url': url_for('note.index')
+    },
+    {
+      'name': 'ДР',
+      'active': True,
+      'url': url_for('birthday.index')
+    }
+  ]
+%}
+
+{% extends 'shared/layout.html' %}
+
+{% block styles %}
+{% endblock %}
+
+
+{% block scripts %}
+{% endblock %}
+
+
+{% block body %}
+  <a href="{{ url_for('.index') }}" class="mt-2">Назад</a>
+
+  <div class="row">
+    <div class="col-md-6">
+
+      <div class="d-flex justify-content-end align-items-end">
+        <form action="{{ url_for('.delete') }}" method=post>
+          <input type="hidden" name="id" value="{{ birthday.id }}">
+          <button class="btn btn-danger btn-sm">
+              Удалить
+          </button>
+        </form>
+      </div>
+
+      <div class="mt-1">
+        <form action="{{ url_for('.save') }}" method=post>
+          <div class="d-grid gap-1">
+            <input type="hidden" name="id" value="{{ birthday.id }}">
+            <input type="text" class="form-control" value="{{ birthday.birth_date.strftime('%d.%m.%Y') }}" name="birth_date">
+            <input type="text" class="form-control" value="{{ birthday.name }}" name="name">
+            <div class="g-grid">
+              <button type="submit" class="btn btn-primary">Сохранить</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}

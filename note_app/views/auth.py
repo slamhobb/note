@@ -45,7 +45,7 @@ def service_login(login: str):
     if not config.SERVICE_LOGIN:
         return redirect(url_for('redirect.redirect'))
 
-    token = auth_service.authentificate_by_login(login)
+    token = auth_service.authenticate_by_login(login)
 
     set_token(token, True)
     return redirect(url_for('redirect.redirect'))

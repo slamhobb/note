@@ -4,3 +4,6 @@ __pycache__
 
 # vendor static
 static/vendor
+
+# idea
+.idea/

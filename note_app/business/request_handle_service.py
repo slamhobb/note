@@ -1,6 +1,7 @@
 import inject
 
-from viberbot.api.viber_requests import ViberRequest, ViberMessageRequest
+from viberbot.api.viber_requests.viber_request import ViberRequest
+from viberbot.api.viber_requests import ViberMessageRequest
 from viberbot.api.messages import TextMessage
 
 from note_app.business.bot_service import BotService
@@ -9,7 +10,7 @@ from note_app.business.bot_service import BotService
 class RequestHandleService:
     bot_service = inject.attr(BotService)
 
-    def handle_request(self, viber_request: ViberRequest) -> str:
+    def handle_request(self, viber_request: ViberRequest) -> [str, None]:
         if isinstance(viber_request, ViberMessageRequest):
             message = viber_request.message
 

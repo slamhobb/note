@@ -14,7 +14,7 @@ class NoteTypeService:
     def get_by_user_id(self, user_id: int) -> List[NoteType]:
         return self.note_type_dao.get_by_user_id(user_id)
 
-    def insert(self, note_type: NoteTypeDao) -> int:
+    def insert(self, note_type: NoteType) -> int:
         return self.note_type_dao.insert(note_type)
 
     def delete(self, user_id: int, id: int):

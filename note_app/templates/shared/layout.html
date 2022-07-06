@@ -16,6 +16,15 @@
     <nav class="navbar navbar-expand navbar-dark bg-dark">
       <div class="container">
         <a class="navbar-brand" href="{{ url_for('note.index') }}">BadNote</a>
+        <ul class="navbar-nav">
+          {% for menu_item in menu %}
+            <li class="nav-item">
+              <a class="nav-link {% if menu_item.active %} active {% endif %}" href="{{ menu_item.url }}">
+                {{ menu_item.name }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
         {% if g.user_context.login %}
           <div class="navbar-text ms-auto mr-2">{{ g.user_context.login }}</div>
           <div class="navbar-nav">

@@ -4,10 +4,10 @@ from dataclasses import dataclass
 
 
 @dataclass
-class User(object):
+class User:
     id: int
     login: str
-    viber_id: int
+    viber_id: str
 
     @classmethod
     def from_dict(cls, adict: dict) -> User:
