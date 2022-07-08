@@ -14,7 +14,7 @@ class UserService:
     def get_by_login(self, login: str) -> User:
         return self.user_dao.get_by_login(login)
 
-    def get_by_messanger_id(self, messanger_id: str, messanger_type: MessangerType) -> User | None:
+    def get_by_messanger_id(self, messanger_id: str, messanger_type: MessangerType) -> User:
         if messanger_type == MessangerType.Viber:
             return self.user_dao.get_by_viber_id(messanger_id)
 

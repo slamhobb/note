@@ -7,8 +7,8 @@ from dataclasses import dataclass
 class User:
     id: int
     login: str
-    viber_id: str | None
-    telegram_id: str | None
+    viber_id: str
+    telegram_id: str
 
     @classmethod
     def from_dict(cls, adict: dict) -> User:

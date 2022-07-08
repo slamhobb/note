@@ -38,7 +38,7 @@ class AuthService:
 
         return user
 
-    def authenticate_by_digit_code(self, login: str, digit_code: str) -> str | None:
+    def authenticate_by_digit_code(self, login: str, digit_code: str) -> str:
         user = self.get_user_by_digit_code(login, digit_code)
         if user is None:
             return None
@@ -48,7 +48,7 @@ class AuthService:
 
         return auth_token.token
 
-    def authenticate_by_login(self, login: str) -> str | None:
+    def authenticate_by_login(self, login: str) -> str:
         user = self.user_service.get_by_login(login)
 
         if user is None:
@@ -77,7 +77,7 @@ class AuthService:
         del self.user_token_cache[token]
         self.auth_token_dao.delete(user_id, token)
 
-    def _get_auth_user(self, token: str) -> AuthUser | None:
+    def _get_auth_user(self, token: str) -> AuthUser:
         auth_user = self.user_token_cache.get(token, None)
         if auth_user is not None:
             return auth_user

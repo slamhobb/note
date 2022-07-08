@@ -11,7 +11,7 @@ from note_app.business.bot_service import BotService
 class RequestHandleService:
     bot_service = inject.attr(BotService)
 
-    def handle_viber_request(self, viber_request: ViberRequest) -> str | None:
+    def handle_viber_request(self, viber_request: ViberRequest) -> str:
         if isinstance(viber_request, ViberMessageRequest):
             message = viber_request.message
 
@@ -23,7 +23,7 @@ class RequestHandleService:
 
         return None
 
-    def handle_telegram_request(self, sender_id: str, message: str) -> str | None:
+    def handle_telegram_request(self, sender_id: str, message: str) -> str:
         if len(message) > 0:
             return self.bot_service.handle_message(
                 sender_id,
