@@ -2,11 +2,13 @@ drop table if exists user;
 create table user(
     id integer primary key autoincrement,
     login text not null,
-    viber_id text not null
+    viber_id text null,
+    telegram_id text null
 );
 
 create index pk_user_id on user(id);
 create unique index uq_user_viber_id on user(viber_id);
+create unique index uq_user_telegram_id on user(telegram_id);
 
 
 drop table if exists auth_token;

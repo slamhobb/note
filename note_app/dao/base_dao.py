@@ -14,7 +14,7 @@ class BaseDao:
         return conn
 
     @staticmethod
-    def __map_result(cls, items):
+    def __map_result(cls, items) -> list:
         return [cls.from_dict(item) for item in items]
 
     def query_one_field(self, cls, sql, params):
@@ -37,7 +37,7 @@ class BaseDao:
 
         return cls.from_dict(item)
 
-    def query_all(self, cls, sql, params):
+    def query_all(self, cls, sql, params) -> list:
         conn = self.__create_connection()
         items = conn.execute(sql, params).fetchall()
         conn.close()
@@ -57,7 +57,7 @@ class BaseDao:
         conn.commit()
         conn.close()
 
-    def get_sql(self, path):
+    def get_sql(self, path) -> str:
         with open(self.base_dir + path, 'r') as f:
             query = f.read()
         return query

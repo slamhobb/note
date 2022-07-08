@@ -4,4 +4,4 @@ select
     viber_id,
     telegram_id
     from user
-    where viber_id = :viber_id;
+    where telegram_id = :telegram_id;

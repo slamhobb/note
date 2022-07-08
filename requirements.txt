@@ -2,3 +2,4 @@ Flask
 viberbot
 Inject
 python-dateutil
+requests

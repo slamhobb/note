@@ -7,7 +7,7 @@ from note_app.domain.birthday import Birthday
 class BirthdayService:
     birthday_dao = inject.attr(BirthdayDao)
 
-    def get_list(self, user_id: int) -> [Birthday]:
+    def get_list(self, user_id: int) -> list[Birthday]:
         return self.birthday_dao.get_list(user_id)
 
     def get_by_id(self, user_id: int, id: int) -> Birthday:
@@ -17,7 +17,8 @@ class BirthdayService:
         if birthday.id == 0:
             return self.birthday_dao.insert(birthday)
         else:
-            return self.birthday_dao.update(birthday)
+            self.birthday_dao.update(birthday)
+            return birthday.id
 
     def delete(self, user_id: int, id: int):
         return self.birthday_dao.delete(user_id, id)

@@ -1,5 +1,5 @@
 import locale
-locale.setlocale(locale.LC_TIME, "ru_RU")
+locale.setlocale(locale.LC_TIME, "ru_RU.UTF-8")
 
 from .dependency_injection import configure_inject
 configure_inject()
@@ -24,7 +24,7 @@ def create_app():
     app.session_cookie_name = config.SESSION_COOKIE_NAME
     app.secret_key = config.SECRET_KEY
 
-    app.register_blueprint(bot, url_prefix=f'{PREFIX}/viber-bot')
+    app.register_blueprint(bot, url_prefix=f'{PREFIX}/bot')
     app.register_blueprint(auth, url_prefix=f'{PREFIX}/auth')
     app.register_blueprint(redirect, url_prefix=f'{PREFIX}/redirect')
     app.register_blueprint(note, url_prefix=f'{PREFIX}')

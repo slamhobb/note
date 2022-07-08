@@ -1,5 +1,3 @@
-from typing import List
-
 from datetime import date
 
 from note_app.dao.base_dao import BaseDao
@@ -11,7 +9,7 @@ class NoteDao(BaseDao):
         super(NoteDao, self).__init__('/note/sql/')
 
     def get_by_type(
-            self, user_id: int, note_type_id: int, hidden: bool) -> List[Note]:
+            self, user_id: int, note_type_id: int, hidden: bool) -> list[Note]:
         sql = self.get_sql('get_by_type.sql')
         return self.query_all(Note, sql, dict(
             user_id=user_id, note_type_id=note_type_id, hidden=hidden))
@@ -27,7 +25,6 @@ class NoteDao(BaseDao):
     def update(self, note: Note):
         sql = self.get_sql('update.sql')
         self.execute(sql, note.to_dict())
-        return note.id
 
     def reset_notes_type(self, user_id: int, note_type_id: int, date: date):
         sql = self.get_sql('reset_notes_type.sql')

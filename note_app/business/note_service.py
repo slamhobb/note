@@ -1,7 +1,5 @@
 import inject
 
-from typing import List
-
 from datetime import date
 import copy
 
@@ -13,7 +11,7 @@ class NoteService:
     note_dao = inject.attr(NoteDao)
 
     def get_by_type(
-            self, user_id: int, note_type_id: int, hidden: bool) -> List[Note]:
+            self, user_id: int, note_type_id: int, hidden: bool) -> list[Note]:
         return self.note_dao.get_by_type(user_id, note_type_id, hidden)
 
     def get_by_id(self, user_id: int, id: int):
@@ -37,7 +35,8 @@ class NoteService:
 
             new_note.note_type_id = note.note_type_id
 
-            return self.note_dao.update(new_note), old_note
+            self.note_dao.update(new_note)
+            return new_note.id, old_note
 
     def hide(self, user_id: int, id: int) -> Note:
         old_note = self.note_dao.get_by_id(user_id, id)

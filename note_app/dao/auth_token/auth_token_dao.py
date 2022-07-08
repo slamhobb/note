@@ -6,7 +6,7 @@ class AuthTokenDao(BaseDao):
     def __init__(self):
         super().__init__('/auth_token/sql/')
 
-    def insert(self, auth_token: AuthToken):
+    def insert(self, auth_token: AuthToken) -> int:
         sql = self.get_sql('insert.sql')
         return self.execute(sql, auth_token.to_dict())
 

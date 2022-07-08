@@ -25,7 +25,7 @@ class AuthService:
 
         return digit_code
 
-    def authenticate_by_digit_code(self, login: str, digit_code: str) -> [str, None]:
+    def get_user_by_digit_code(self, login: str, digit_code: str):
         user = self.user_service.get_by_login(login)
 
         if user is None:
@@ -36,12 +36,19 @@ class AuthService:
         if digit_code != saved_digit_code:
             return None
 
+        return user
+
+    def authenticate_by_digit_code(self, login: str, digit_code: str) -> str | None:
+        user = self.get_user_by_digit_code(login, digit_code)
+        if user is None:
+            return None
+
         auth_token = AuthToken(0, user.id, self._generate_token())
         self.auth_token_dao.insert(auth_token)
 
         return auth_token.token
 
-    def authenticate_by_login(self, login: str) -> [str, None]:
+    def authenticate_by_login(self, login: str) -> str | None:
         user = self.user_service.get_by_login(login)
 
         if user is None:
@@ -70,7 +77,7 @@ class AuthService:
         del self.user_token_cache[token]
         self.auth_token_dao.delete(user_id, token)
 
-    def _get_auth_user(self, token: str) -> [AuthUser, None]:
+    def _get_auth_user(self, token: str) -> AuthUser | None:
         auth_user = self.user_token_cache.get(token, None)
         if auth_user is not None:
             return auth_user
