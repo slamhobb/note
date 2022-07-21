@@ -14,6 +14,10 @@ class BirthdayDao(BaseDao):
         sql = self.get_sql('get_by_id.sql')
         return self.query_one(Birthday, sql, dict(user_id=user_id, id=id))
 
+    def get_by_month_day(self, month: int, day: int):
+        sql = self.get_sql('get_by_month_day.sql')
+        return self.query_all(Birthday, sql, dict(month=month, day=day))
+
     def insert(self, birthday: Birthday) -> int:
         sql = self.get_sql('insert.sql')
         return self.execute(sql, birthday.to_dict())

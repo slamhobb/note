@@ -2,7 +2,7 @@ import inject
 
 from datetime import datetime, date
 
-from flask import Blueprint, render_template, g, request
+from flask import Blueprint, render_template, g, request, Response
 from flask import redirect, url_for
 
 from note_app.infrastructure.web import get_token
@@ -10,12 +10,14 @@ from note_app.infrastructure.auth import login_required
 
 from note_app.business.auth_service import AuthService
 from note_app.business.birthday_service import BirthdayService
+from note_app.business.birthday_notify_service import BirthdayNotifyService
 from note_app.domain.birthday import Birthday
 
 mod = Blueprint('birthday', __name__)
 
 auth_service = inject.instance(AuthService)
 birthday_service = inject.instance(BirthdayService)
+birthday_notify_service = inject.instance(BirthdayNotifyService)
 
 
 @mod.before_request
@@ -79,3 +81,10 @@ def delete():
     birthday_service.delete(user_id, id)
 
     return redirect(url_for('.index'))
+
+
+@mod.route('/notify')
+def notify():
+    today = date.today()
+    birthday_notify_service.notify_about_birthday_on_date(today)
+    return Response(status=200)
