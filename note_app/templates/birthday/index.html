@@ -30,13 +30,20 @@
 
       <div class="list-group list-group-flush">
         {% for birthday in birthdays %}
-          <a href="{{ url_for('.edit', id=birthday.id) }}"
-             class="list-group-item list-group-item-action">
-            <strong class="text-danger">
-              {{ birthday.birth_date.strftime('%d %b')|upper }}
-            </strong>
-            <span>{{ birthday.name }}</span>
-          </a>
+          {% if birthday.id != 0 %}
+            <a href="{{ url_for('.edit', id=birthday.id) }}"
+               class="list-group-item list-group-item-action">
+              <strong class="text-danger">
+                {{ birthday.birth_date.strftime('%d %b')|upper }}
+              </strong>
+              <span>{{ birthday.name }}</span>
+            </a>
+          {% else %}
+            <div class="list-group-item">
+              <strong class="text-secondary">{{ birthday.birth_date.strftime('%d %b')|upper }}</strong>
+              <span>{{ birthday.name }}</span>
+            </div>
+          {% endif %}
         {% endfor %}
       </div>
 

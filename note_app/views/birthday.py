@@ -33,8 +33,9 @@ def index():
     birthdays = birthday_service.get_list(user_id)
     for birthday in birthdays:
         birthday.birth_date = date(date.today().year, birthday.birth_date.month, birthday.birth_date.day)
+    birthdays.append(Birthday(id=0, user_id=0, name='Сегодня', birth_date=date.today()))
     birthdays = [birthday.to_web_dict() for birthday in birthdays]
-    birthdays.sort(key=lambda x: x['birth_date'])
+    birthdays.sort(key=lambda x: (x['birth_date'], x['id']))
 
     return render_template('birthday/index.html', birthdays=birthdays)
 
