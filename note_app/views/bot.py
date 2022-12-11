@@ -23,7 +23,12 @@ def incoming_viber():
 
     viber_request = viber.parse_request(request.get_data())
 
-    response_message = request_handle_service.handle_viber_request(viber_request)
+    def send_message_fn(message: str):
+        viber.send_messages(viber_request.sender.id, [
+            TextMessage(text=message)
+        ])
+
+    response_message = request_handle_service.handle_viber_request(viber_request, send_message_fn)
     if response_message is not None:
         viber.send_messages(viber_request.sender.id, [
             TextMessage(text=response_message)
@@ -38,7 +43,10 @@ def incoming_telegram():
     chat_id = req['message']['chat']['id']
     request_message = req['message']['text']
 
-    response_message = request_handle_service.handle_telegram_request(chat_id, request_message)
+    def send_message_fn(message: str):
+        send_message(chat_id, message)
+
+    response_message = request_handle_service.handle_telegram_request(chat_id, request_message, send_message_fn)
     if response_message is not None:
         send_message(chat_id, response_message)
 

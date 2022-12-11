@@ -1,3 +1,5 @@
+from typing import Callable
+
 import inject
 
 from viberbot.api.viber_requests.viber_request import ViberRequest
@@ -11,7 +13,11 @@ from note_app.business.bot_service import BotService
 class RequestHandleService:
     bot_service = inject.attr(BotService)
 
-    def handle_viber_request(self, viber_request: ViberRequest) -> str:
+    def handle_viber_request(
+        self,
+        viber_request: ViberRequest,
+        send_message_fn: Callable[[str], None]
+    ) -> str:
         if isinstance(viber_request, ViberMessageRequest):
             message = viber_request.message
 
@@ -19,15 +25,22 @@ class RequestHandleService:
                 return self.bot_service.handle_message(
                     viber_request.sender.id,
                     MessangerType.Viber,
-                    viber_request.message.text)
+                    viber_request.message.text,
+                    send_message_fn)
 
         return None
 
-    def handle_telegram_request(self, sender_id: str, message: str) -> str:
+    def handle_telegram_request(
+            self,
+            sender_id: str,
+            message: str,
+            send_message_fn: Callable[[str], None]
+    ) -> str:
         if len(message) > 0:
             return self.bot_service.handle_message(
                 sender_id,
                 MessangerType.Telegram,
-                message)
+                message,
+                send_message_fn)
 
         return None

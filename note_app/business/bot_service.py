@@ -1,19 +1,31 @@
+from typing import Callable
+
 import inject
 
 from note_app.domain.user import User
 from note_app.domain.note import Note
 from note_app.domain.messanger_type import MessangerType
+from note_app.business.auth_service import AuthService
 from note_app.business.user_service import UserService
 from note_app.business.note_service import NoteService
-from note_app.business.auth_service import AuthService
+from note_app.business.youtube_dl_service import YoutubeDlService
 
 
 class BotService:
     user_service = inject.attr(UserService)
     note_service = inject.attr(NoteService)
     auth_service = inject.attr(AuthService)
+    youtube_dl_service = inject.attr(YoutubeDlService)
 
-    def handle_message(self, msgr_id: str, msgr_type: MessangerType, message: str) -> str:
+    def handle_message(
+        self,
+        msgr_id: str,
+        msgr_type: MessangerType,
+        message: str,
+        send_message_fn: Callable[[str], None]
+    ) -> str:
+        if message.startswith('/y'):
+            return self._handle_youtube_dl_message(msgr_id, msgr_type, message, send_message_fn)
         if message.startswith('/'):
             return self._handle_service_message(msgr_id, msgr_type, message)
         else:
@@ -33,6 +45,7 @@ class BotService:
                 '/reg {login} регистрация пользователя с выбранным логином',
                 '/code сгенерировать код для аутентификации',
                 '/attach {login} {code} подключиться к существующему аккаунту'
+                '/yd {url} скачать видео с youtube'
             ]
 
             return '\n'.join(commands)
@@ -121,3 +134,25 @@ class BotService:
         self.note_service.save(note)
 
         return 'Ок'
+
+    def _handle_youtube_dl_message(
+        self,
+        msgr_id: str,
+        msgr_type: MessangerType,
+        message: str,
+        send_message_fn: Callable[[str], None]
+    ) -> str:
+        user = self.user_service.get_by_messanger_id(msgr_id, msgr_type)
+        if user is None:
+            return 'Нужно зарегистрировать пользователя'
+
+        args = message.split(' ')
+
+        if args[0] == '/yd':
+            if len(args) < 2:
+                return 'Ошибка. Url не передан'
+
+            url = args[1]
+            return self.youtube_dl_service.download(url, send_message_fn)
+
+        return 'Не поддерживаемая команда'
