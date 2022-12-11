@@ -40,6 +40,10 @@ def incoming_viber():
 @mod.route('/telegram', methods=['POST'])
 def incoming_telegram():
     req = request.get_json()
+
+    if 'message' not in req:
+        return Response(status=200)
+
     chat_id = req['message']['chat']['id']
     request_message = req['message']['text']
 
