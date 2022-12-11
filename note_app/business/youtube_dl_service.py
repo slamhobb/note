@@ -21,7 +21,7 @@ class YoutubeDlService:
         ydl_opts = {
             'quiet': True,
             'no_warnings': True,
-            'format': 'bestaudio/best',
+            'format': 'best',
             'progress_hooks': [my_hook],
             'outtmpl': f'{config.FILE_PATH}/%(title)s-%(id)s.%(ext)s',
             'restrictfilenames': True
