@@ -8,14 +8,14 @@ from note_app.domain.messanger_type import MessangerType
 from note_app.business.auth_service import AuthService
 from note_app.business.user_service import UserService
 from note_app.business.note_service import NoteService
-from note_app.business.youtube_dl_service import YoutubeDlService
+from note_app.business.yt_dl_service import YtDlService
 
 
 class BotService:
     user_service = inject.attr(UserService)
     note_service = inject.attr(NoteService)
     auth_service = inject.attr(AuthService)
-    youtube_dl_service = inject.attr(YoutubeDlService)
+    yt_dl_service = inject.attr(YtDlService)
 
     def handle_message(
         self,
@@ -155,9 +155,9 @@ class BotService:
         url = args[1]
 
         if command == '/yd':
-            return self.youtube_dl_service.download(url, False, send_message_fn)
+            return self.yt_dl_service.download(url, False, send_message_fn)
 
         if command == '/yda':
-            return self.youtube_dl_service.download(url, True, send_message_fn)
+            return self.yt_dl_service.download(url, True, send_message_fn)
 
         return 'Не поддерживаемая команда'

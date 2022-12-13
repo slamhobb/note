@@ -1,13 +1,12 @@
-from __future__ import unicode_literals
 from typing import Callable
 
 from threading import Thread
 
 from note_app import config
-import youtube_dl
+from yt_dlp import YoutubeDL
 
 
-class YoutubeDlService:
+class YtDlService:
     def download(self, url: str, only_audio: bool, send_message_fn: Callable[[str], None]) -> str:
         thread = Thread(target=self.download_in_thread, args=[url, only_audio, send_message_fn])
         thread.start()
@@ -21,13 +20,13 @@ class YoutubeDlService:
         ydl_opts = {
             'quiet': True,
             'no_warnings': True,
-            'format': 'bestaudio' if only_audio else 'best[height<=720]',
+            'format': 'm4a/bestaudio' if only_audio else 'best[height<=720]',
             'progress_hooks': [my_hook],
             'outtmpl': f'{config.FILE_PATH}/%(title)s-%(id)s.%(ext)s',
             'restrictfilenames': True
         }
 
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        with YoutubeDL(ydl_opts) as ydl:
             try:
                 ydl.download([url])
             except:

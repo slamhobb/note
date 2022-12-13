@@ -3,4 +3,4 @@ viberbot
 Inject
 python-dateutil
 requests
-youtube_dl
+yt-dlp
