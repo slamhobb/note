@@ -45,7 +45,8 @@ class BotService:
                 '/reg {login} регистрация пользователя с выбранным логином',
                 '/code сгенерировать код для аутентификации',
                 '/attach {login} {code} подключиться к существующему аккаунту',
-                '/yd {url} скачать видео с youtube'
+                '/yd {url} скачать видео с youtube',
+                '/yda {url} скачать только аудио с youtube'
             ]
 
             return '\n'.join(commands)
@@ -147,12 +148,16 @@ class BotService:
             return 'Нужно зарегистрировать пользователя'
 
         args = message.split(' ')
+        if len(args) < 2:
+            return 'Ошибка. Url не передан'
 
-        if args[0] == '/yd':
-            if len(args) < 2:
-                return 'Ошибка. Url не передан'
+        command = args[0]
+        url = args[1]
 
-            url = args[1]
-            return self.youtube_dl_service.download(url, send_message_fn)
+        if command == '/yd':
+            return self.youtube_dl_service.download(url, False, send_message_fn)
+
+        if command == '/yda':
+            return self.youtube_dl_service.download(url, True, send_message_fn)
 
         return 'Не поддерживаемая команда'

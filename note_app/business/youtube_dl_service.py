@@ -8,20 +8,20 @@ import youtube_dl
 
 
 class YoutubeDlService:
-    def download(self, url: str, send_message_fn: Callable[[str], None]) -> str:
-        thread = Thread(target=self.download_in_thread, args=[url, send_message_fn])
+    def download(self, url: str, only_audio: bool, send_message_fn: Callable[[str], None]) -> str:
+        thread = Thread(target=self.download_in_thread, args=[url, only_audio, send_message_fn])
         thread.start()
 
         return 'Скачиваю'
 
-    def download_in_thread(self, url: str, send_message_fn: Callable[[str], None]):
+    def download_in_thread(self, url: str, only_audio: bool, send_message_fn: Callable[[str], None]):
         def my_hook(result):
             self._on_finish_hook(result, send_message_fn)
 
         ydl_opts = {
             'quiet': True,
             'no_warnings': True,
-            'format': 'best',
+            'format': 'bestaudio' if only_audio else 'best[height<=720]',
             'progress_hooks': [my_hook],
             'outtmpl': f'{config.FILE_PATH}/%(title)s-%(id)s.%(ext)s',
             'restrictfilenames': True
