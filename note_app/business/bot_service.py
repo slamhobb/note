@@ -38,7 +38,7 @@ class BotService:
 
         if message.startswith('/help'):
             commands = [
-                'Просмотр заметок по ссылке https://badb.site/note\n'
+                'Просмотр заметок по ссылке https://badb.fun/note\n'
                 '/help помощь',
                 '/id получение идентификатора пользователя',
                 '/user получение информации о пользователе',
