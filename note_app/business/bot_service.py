@@ -9,6 +9,7 @@ from note_app.business.auth_service import AuthService
 from note_app.business.user_service import UserService
 from note_app.business.note_service import NoteService
 from note_app.business.yt_dl_service import YtDlService
+from note_app import config
 
 
 class BotService:
@@ -38,7 +39,7 @@ class BotService:
 
         if message.startswith('/help'):
             commands = [
-                'Просмотр заметок по ссылке https://badb.fun/note\n'
+                f'Просмотр заметок по ссылке {config.SITE_PATH}\n'
                 '/help помощь',
                 '/id получение идентификатора пользователя',
                 '/user получение информации о пользователе',

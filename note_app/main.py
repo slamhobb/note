@@ -21,8 +21,8 @@ PREFIX = '/note'
 def create_app():
     app = Flask(__name__, static_url_path=f'{PREFIX}/static')
 
-    app.session_cookie_name = config.SESSION_COOKIE_NAME
-    app.secret_key = config.SECRET_KEY
+    app.config['SESSION_COOKIE_NAME'] = config.SESSION_COOKIE_NAME
+    app.config['SECRET_KEY'] = config.SECRET_KEY
 
     app.register_blueprint(bot, url_prefix=f'{PREFIX}/bot')
     app.register_blueprint(auth, url_prefix=f'{PREFIX}/auth')

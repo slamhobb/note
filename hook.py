@@ -1,3 +1,3 @@
 from note_app.viberapi import viber
 
-viber.set_webhook('https://badb.fun/note/bot/viber')
+viber.set_webhook('https://badbalance.pro/note/bot/viber')
