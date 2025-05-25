@@ -94,7 +94,7 @@ def save():
     user_id = g.user_context.user_id
 
     id = int(request.form.get('id', 0))
-    text = request.form['text']
+    text = request.form['text'].strip()
     note_type_id = int(request.form['note_type_id'])
 
     note = Note(id, user_id, text, note_type_id)
